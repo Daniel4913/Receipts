@@ -1,4 +1,4 @@
-package com.cleverexpenses.receipts
+package com.cleverexpenses.receipts.feature_receipt.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

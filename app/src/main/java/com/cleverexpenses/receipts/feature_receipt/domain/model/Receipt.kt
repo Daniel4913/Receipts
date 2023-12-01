@@ -1,12 +1,14 @@
 package com.cleverexpenses.receipts.feature_receipt.domain.model
 
-import com.cleverexpenses.receipts.feature_receipt.domain.util.Payment
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
+@Entity
 data class Receipt(
-    val id: Int,
+    @PrimaryKey val receiptId: Int,
     val shopName: String,
     val date: String,
-    val products: List<Product>,
     val sum: Int,
-    val paymentMethod: Payment,
+    val paymentMethod: String,
 )
+

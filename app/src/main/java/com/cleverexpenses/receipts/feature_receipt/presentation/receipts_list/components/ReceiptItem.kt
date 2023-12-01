@@ -26,7 +26,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cleverexpenses.receipts.feature_receipt.domain.model.Receipt
-import com.cleverexpenses.receipts.feature_receipt.domain.util.Payment
 import com.cleverexpenses.receipts.feature_receipt.presentation.util.getPaymentMethod
 
 
@@ -77,7 +76,6 @@ fun ReceiptItem(
             Row(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Text(text = receipt.products.size.toString())
                 Spacer(modifier = Modifier.width(8.dp))
                 Icon(
                     modifier = Modifier.size(12.dp),
@@ -110,12 +108,11 @@ fun ReceiptItem(
 fun ReceiptItemPreview() {
     ReceiptItem(
         receipt = Receipt(
-            id = 3812407,
+            receiptId = 3812407,
             shopName = "Molly",
             date = "18 Mar 16:00",
-            products = emptyList(),
             sum = 62332,
-            paymentMethod = Payment.Card
+            paymentMethod = "card"
         )
     )
 }
