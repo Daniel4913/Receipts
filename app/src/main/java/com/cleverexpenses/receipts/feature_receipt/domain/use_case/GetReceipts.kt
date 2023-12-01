@@ -4,7 +4,7 @@ import com.cleverexpenses.receipts.feature_receipt.data.repository.ReceiptReposi
 import com.cleverexpenses.receipts.feature_receipt.domain.model.Receipt
 import kotlinx.coroutines.flow.Flow
 
-class GetReceiptsUseCase(
+class GetReceipts(
     private val repository: ReceiptRepository
 ) {
     operator fun invoke(

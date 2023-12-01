@@ -1,6 +1,7 @@
 package com.cleverexpenses.receipts.feature_receipt.data.datasource
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -12,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ReceiptDao {
     @Query("SELECT * FROM Receipt")
-     fun getAllReceipts(): Flow<List<Receipt>>
+    fun getAllReceipts(): Flow<List<Receipt>>
 
     @Transaction
     @Query("SELECT * FROM Receipt WHERE receiptId = :receiptId")
@@ -23,5 +24,11 @@ interface ReceiptDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertProduct(product: Product)
+
+    @Delete
+    suspend fun deleteReceipt(receipt: Receipt)
+
+    @Delete
+    suspend fun deleteProduct(product: Product)
 
 }

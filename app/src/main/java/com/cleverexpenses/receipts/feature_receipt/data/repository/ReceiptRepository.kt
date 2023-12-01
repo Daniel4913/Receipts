@@ -9,10 +9,14 @@ interface ReceiptRepository {
 
     fun getReceipts(): Flow<List<Receipt>>
 
-    suspend fun getReceiptWithProducts(receiptId: Int): ReceiptWithProducts
+    fun getReceiptWithProducts(receiptId: Int): Flow<ReceiptWithProducts>
 
     suspend fun insertReceipt(receipt: Receipt)
 
     suspend fun insertProduct(product: Product)
+
+    suspend fun deleteReceipt(receipt: Receipt)
+
+    suspend fun deleteProduct(product: Product)
 
 }

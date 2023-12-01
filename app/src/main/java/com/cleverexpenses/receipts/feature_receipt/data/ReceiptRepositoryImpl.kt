@@ -9,12 +9,12 @@ import kotlinx.coroutines.flow.Flow
 
 class ReceiptRepositoryImpl(
     private val dao: ReceiptDao
-): ReceiptRepository {
+) : ReceiptRepository {
     override fun getReceipts(): Flow<List<Receipt>> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getReceiptWithProducts(receiptId: Int): ReceiptWithProducts {
+    override fun getReceiptWithProducts(receiptId: Int): Flow<ReceiptWithProducts> {
         TODO("Not yet implemented")
     }
 
@@ -23,6 +23,14 @@ class ReceiptRepositoryImpl(
     }
 
     override suspend fun insertProduct(product: Product) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun deleteReceipt(receipt: Receipt) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun deleteProduct(product: Product) {
         TODO("Not yet implemented")
     }
 
