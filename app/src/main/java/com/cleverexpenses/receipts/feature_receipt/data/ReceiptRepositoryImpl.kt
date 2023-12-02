@@ -10,28 +10,32 @@ import kotlinx.coroutines.flow.Flow
 class ReceiptRepositoryImpl(
     private val dao: ReceiptDao
 ) : ReceiptRepository {
-    override fun getReceipts(): Flow<List<Receipt>> {
-        TODO("Not yet implemented")
+    override fun getAllReceipts(): Flow<List<Receipt>> {
+        return dao.getAllReceipts()
+    }
+
+    override fun getAllReceiptsWithProducts(): Flow<List<ReceiptWithProducts>> {
+        return dao.getAllReceiptsWithProducts()
     }
 
     override fun getReceiptWithProducts(receiptId: Int): Flow<ReceiptWithProducts> {
-        TODO("Not yet implemented")
+        return dao.getReceiptWithProducts(receiptId)
     }
 
     override suspend fun insertReceipt(receipt: Receipt) {
-        TODO("Not yet implemented")
+        dao.insertReceipt(receipt)
     }
 
     override suspend fun insertProduct(product: Product) {
-        TODO("Not yet implemented")
+        dao.insertProduct(product)
     }
 
     override suspend fun deleteReceipt(receipt: Receipt) {
-        TODO("Not yet implemented")
+        dao.deleteReceipt(receipt)
     }
 
     override suspend fun deleteProduct(product: Product) {
-        TODO("Not yet implemented")
+        dao.deleteProduct(product)
     }
 
 }

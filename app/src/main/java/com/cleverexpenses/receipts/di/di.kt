@@ -1,4 +1,4 @@
-package com.cleverexpenses.di
+package com.cleverexpenses.receipts.di
 
 import androidx.room.Room
 import com.cleverexpenses.receipts.feature_receipt.data.datasource.ReceiptsDatabase

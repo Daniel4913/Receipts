@@ -10,6 +10,6 @@ class GetReceipts(
     operator fun invoke(
 
     ): Flow<List<Receipt>> {
-        return repository.getReceipts()
+        return repository.getAllReceipts()
     }
 }

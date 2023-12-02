@@ -16,8 +16,12 @@ interface ReceiptDao {
     fun getAllReceipts(): Flow<List<Receipt>>
 
     @Transaction
+    @Query("SELECT * FROM Receipt")
+     fun getAllReceiptsWithProducts(): Flow<List<ReceiptWithProducts>>
+
+    @Transaction
     @Query("SELECT * FROM Receipt WHERE receiptId = :receiptId")
-    suspend fun getReceiptWithProducts(receiptId: Int): ReceiptWithProducts
+     fun getReceiptWithProducts(receiptId: Int): Flow<ReceiptWithProducts>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertReceipt(receipt: Receipt)

@@ -7,7 +7,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface ReceiptRepository {
 
-    fun getReceipts(): Flow<List<Receipt>>
+    fun getAllReceipts(): Flow<List<Receipt>>
+
+    fun getAllReceiptsWithProducts(): Flow<List<ReceiptWithProducts>>
 
     fun getReceiptWithProducts(receiptId: Int): Flow<ReceiptWithProducts>
 
@@ -18,5 +20,4 @@ interface ReceiptRepository {
     suspend fun deleteReceipt(receipt: Receipt)
 
     suspend fun deleteProduct(product: Product)
-
 }

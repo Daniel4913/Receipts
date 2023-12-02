@@ -1,7 +1,7 @@
 package com.cleverexpenses.receipts
 
 import android.app.Application
-import com.cleverexpenses.di.appModule
+import com.cleverexpenses.receipts.di.appModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import timber.log.Timber

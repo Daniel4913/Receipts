@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
@@ -25,16 +24,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.cleverexpenses.receipts.feature_receipt.domain.model.Receipt
+import com.cleverexpenses.receipts.feature_receipt.data.datasource.ReceiptWithProducts
 import com.cleverexpenses.receipts.feature_receipt.presentation.util.getPaymentMethod
+
 
 
 @Composable
 fun ReceiptItem(
-    receipt: Receipt,
+    receipt: ReceiptWithProducts,
     modifier: Modifier = Modifier
-        .fillMaxWidth()
-        .padding(16.dp),
 ) {
     Column(
         modifier = modifier
@@ -45,7 +43,7 @@ fun ReceiptItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = receipt.date,
+                text = receipt.receipt.date,
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -61,13 +59,14 @@ fun ReceiptItem(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    painter = painterResource(id = getPaymentMethod(receipt.paymentMethod)),
+                    painter = painterResource(id = getPaymentMethod(receipt.receipt.paymentMethod)),
                     contentDescription = "payment method",
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
+
                 Spacer(modifier = Modifier.width(16.dp))
                 Text(
-                    text = receipt.shopName,
+                    text = receipt.receipt.shopName,
                     style = MaterialTheme.typography.bodyLarge,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
@@ -77,14 +76,18 @@ fun ReceiptItem(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = receipt.product.size.toString(),
+                    style = MaterialTheme.typography.bodySmall
+                )
                 Icon(
                     modifier = Modifier.size(12.dp),
                     imageVector = Icons.Default.ShoppingCart,
-                    contentDescription = "Icon",
+                    contentDescription = "Number of products icon",
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Spacer(modifier = Modifier.width(16.dp))
-                Text(text = receipt.sum.toString(), fontWeight = FontWeight(600))
+                Text(text = receipt.receipt.sum.toString(), fontWeight = FontWeight(600))
                 Icon(
                     imageVector = Icons.Default.KeyboardArrowRight,
                     contentDescription = "Icon",
@@ -106,14 +109,14 @@ fun ReceiptItem(
 @Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
 @Composable
 fun ReceiptItemPreview() {
-    ReceiptItem(
-        receipt = Receipt(
-            receiptId = 3812407,
-            shopName = "Molly",
-            date = "18 Mar 16:00",
-            sum = 62332,
-            paymentMethod = "card"
-        )
-    )
+//    ReceiptItem(
+//        receipt = Receipt(
+//            receiptId = 3812407,
+//            shopName = "Molly",
+//            date = "18 Mar 16:00",
+//            sum = 62332,
+//            paymentMethod = "card"
+//        )
+//    )
 }
 
