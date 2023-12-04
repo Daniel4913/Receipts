@@ -1,41 +1,38 @@
 package com.cleverexpenses.receipts.feature_receipt.data
 
 import com.cleverexpenses.receipts.feature_receipt.data.datasource.ReceiptDao
-import com.cleverexpenses.receipts.feature_receipt.data.datasource.ReceiptWithProducts
+import com.cleverexpenses.receipts.feature_receipt.domain.model.ReceiptWithProducts
 import com.cleverexpenses.receipts.feature_receipt.data.repository.ReceiptRepository
 import com.cleverexpenses.receipts.feature_receipt.domain.model.Product
 import com.cleverexpenses.receipts.feature_receipt.domain.model.Receipt
 import kotlinx.coroutines.flow.Flow
 
 class ReceiptRepositoryImpl(
-    private val dao: ReceiptDao
+    private val receiptDao: ReceiptDao
 ) : ReceiptRepository {
-    override fun getAllReceipts(): Flow<List<Receipt>> {
-        return dao.getAllReceipts()
-    }
 
     override fun getAllReceiptsWithProducts(): Flow<List<ReceiptWithProducts>> {
-        return dao.getAllReceiptsWithProducts()
+        return receiptDao.getAllReceiptsWithProducts()
     }
 
     override fun getReceiptWithProducts(receiptId: Int): Flow<ReceiptWithProducts> {
-        return dao.getReceiptWithProducts(receiptId)
+        return receiptDao.getReceiptWithProducts(receiptId)
     }
 
     override suspend fun insertReceipt(receipt: Receipt) {
-        dao.insertReceipt(receipt)
+        receiptDao.insertReceipt(receipt)
     }
 
     override suspend fun insertProduct(product: Product) {
-        dao.insertProduct(product)
+        receiptDao.insertProduct(product)
     }
 
     override suspend fun deleteReceipt(receipt: Receipt) {
-        dao.deleteReceipt(receipt)
+        receiptDao.deleteReceipt(receipt)
     }
 
     override suspend fun deleteProduct(product: Product) {
-        dao.deleteProduct(product)
+        receiptDao.deleteProduct(product)
     }
 
 }

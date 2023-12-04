@@ -24,7 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.cleverexpenses.receipts.feature_receipt.data.datasource.ReceiptWithProducts
+import com.cleverexpenses.receipts.feature_receipt.domain.model.ReceiptWithProducts
 import com.cleverexpenses.receipts.feature_receipt.presentation.util.getPaymentMethod
 
 
@@ -43,7 +43,7 @@ fun ReceiptItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = receipt.receipt.date,
+                text = receipt.general.date,
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -59,14 +59,14 @@ fun ReceiptItem(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    painter = painterResource(id = getPaymentMethod(receipt.receipt.paymentMethod)),
+                    painter = painterResource(id = getPaymentMethod(receipt.general.paymentMethod)),
                     contentDescription = "payment method",
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
 
                 Spacer(modifier = Modifier.width(16.dp))
                 Text(
-                    text = receipt.receipt.shopName,
+                    text = receipt.general.shopName,
                     style = MaterialTheme.typography.bodyLarge,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
@@ -77,7 +77,7 @@ fun ReceiptItem(
             ) {
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = receipt.product.size.toString(),
+                    text = receipt.products.size.toString(),
                     style = MaterialTheme.typography.bodySmall
                 )
                 Icon(
@@ -87,7 +87,7 @@ fun ReceiptItem(
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Spacer(modifier = Modifier.width(16.dp))
-                Text(text = receipt.receipt.sum.toString(), fontWeight = FontWeight(600))
+                Text(text = receipt.general.sum.toString(), fontWeight = FontWeight(600))
                 Icon(
                     imageVector = Icons.Default.KeyboardArrowRight,
                     contentDescription = "Icon",

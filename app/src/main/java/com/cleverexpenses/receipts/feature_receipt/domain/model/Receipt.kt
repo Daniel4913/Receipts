@@ -11,4 +11,3 @@ data class Receipt(
     val sum: Int,
     val paymentMethod: String,
 )
-

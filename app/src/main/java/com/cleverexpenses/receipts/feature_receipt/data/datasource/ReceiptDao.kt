@@ -8,12 +8,11 @@ import androidx.room.Query
 import androidx.room.Transaction
 import com.cleverexpenses.receipts.feature_receipt.domain.model.Product
 import com.cleverexpenses.receipts.feature_receipt.domain.model.Receipt
+import com.cleverexpenses.receipts.feature_receipt.domain.model.ReceiptWithProducts
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ReceiptDao {
-    @Query("SELECT * FROM Receipt")
-    fun getAllReceipts(): Flow<List<Receipt>>
 
     @Transaction
     @Query("SELECT * FROM Receipt")

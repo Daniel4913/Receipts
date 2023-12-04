@@ -8,7 +8,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.cleverexpenses.receipts.feature_receipt.presentation.receipts_list.ReceiptsScreen
+import com.cleverexpenses.receipts.feature_receipt.presentation.receipts_list.ReceiptsViewModel
 import com.cleverexpenses.receipts.ui.theme.ReceiptsTheme
+import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,7 +21,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    ReceiptsScreen()
+                    val viewModel: ReceiptsViewModel = koinViewModel()
+                    ReceiptsScreen(viewModel = viewModel)
                 }
             }
         }

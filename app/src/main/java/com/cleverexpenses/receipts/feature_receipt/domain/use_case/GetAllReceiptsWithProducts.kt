@@ -1,15 +1,13 @@
 package com.cleverexpenses.receipts.feature_receipt.domain.use_case
 
+import com.cleverexpenses.receipts.feature_receipt.domain.model.ReceiptWithProducts
 import com.cleverexpenses.receipts.feature_receipt.data.repository.ReceiptRepository
-import com.cleverexpenses.receipts.feature_receipt.domain.model.Receipt
 import kotlinx.coroutines.flow.Flow
 
-class GetReceipts(
+class GetAllReceiptsWithProducts(
     private val repository: ReceiptRepository
 ) {
-    operator fun invoke(
-
-    ): Flow<List<Receipt>> {
-        return repository.getAllReceipts()
+    operator fun invoke(): Flow<List<ReceiptWithProducts>> {
+        return repository.getAllReceiptsWithProducts()
     }
 }
