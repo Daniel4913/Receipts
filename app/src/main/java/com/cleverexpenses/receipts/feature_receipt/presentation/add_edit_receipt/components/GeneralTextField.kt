@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
@@ -26,7 +27,7 @@ fun GeneralTextField(
     value: String,
     onValueChange: (String) -> Unit,
     placeholderText: String,
-    onFocusChanged: (Boolean) -> Unit,
+    onFocusChanged: (FocusState) -> Unit,
     focusRequester: FocusRequester,
     keyboardType: KeyboardType = KeyboardType.Text,
 ) {
@@ -39,13 +40,7 @@ fun GeneralTextField(
         placeholder = { Text(text = placeholderText) },
         modifier = modifier
             .focusRequester(focusRequester)
-            .onFocusChanged { focusState ->
-                onFocusChanged(focusState.hasFocus)
-                if (focusState.isFocused) {
-                    keyboardController?.hide()
-                } else {
-                    keyboardController?.hide()
-                }
+            .onFocusChanged { onFocusChanged(it)
             },
         colors = TextFieldDefaults.textFieldColors(
             containerColor = Color.Transparent,
