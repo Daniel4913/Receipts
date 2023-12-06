@@ -1,5 +1,6 @@
 package com.cleverexpenses.receipts.feature_receipt.presentation.add_edit_receipt
 
+import android.graphics.Color
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -37,8 +38,13 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.canhub.cropper.CropImageContract
+import com.canhub.cropper.CropImageContractOptions
+import com.canhub.cropper.CropImageOptions
+import com.canhub.cropper.CropImageView
 import com.cleverexpenses.receipts.R
 import com.cleverexpenses.receipts.feature_receipt.presentation.add_edit_receipt.components.GeneralReceiptInputsHolder
+import timber.log.Timber
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -47,8 +53,6 @@ fun AddEditScreen(
     onBackPressed: () -> Unit
 ) {
     var paddingValues: PaddingValues
-
-
 
     Scaffold(
         topBar = {
@@ -80,14 +84,19 @@ fun AddEditScreen(
         //
         var receiptUri by remember { mutableStateOf<Uri?>(null) }
 
-        val filePicker = rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.GetContent(),
-            onResult = { uri: Uri? ->
-                if (uri != null) {
-                    receiptUri = uri
+        val pickImageAndCrop = rememberLauncherForActivityResult(
+            CropImageContract()
+        ) { result ->
+            if (result.isSuccessful) {
+                val uriContent = result.uriContent
+                if (uriContent != null) {
+                    receiptUri = uriContent
                 }
+            } else {
+                val exception = result.error
+                Timber.d("fun cropImage", "$exception")
             }
-        )
+        }
 
         //
         Column(
@@ -102,9 +111,9 @@ fun AddEditScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(150.dp),
+                color = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.2f),
                 shape = MaterialTheme.shapes.medium
             ) {
-
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -128,7 +137,14 @@ fun AddEditScreen(
                     }
                     IconButton(
                         onClick = {
-                            filePicker.launch("image/*")
+                            val cropOptions = CropImageOptions(
+                                guidelinesColor = Color.BLACK,
+                                borderLineColor = Color.BLACK,
+                                borderCornerColor = Color.RED,
+                            )
+                            val contractOptions =
+                                CropImageContractOptions(uri = null, cropImageOptions = cropOptions)
+                            pickImageAndCrop.launch(contractOptions)
                         },
                         modifier = Modifier
                             .padding(top = 16.dp)
