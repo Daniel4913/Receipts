@@ -7,9 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.ArrowBack
-import androidx.compose.material.icons.rounded.Done
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -24,7 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.res.painterResource
 import com.cleverexpenses.receipts.R
-import com.cleverexpenses.receipts.feature_receipt.presentation.add_edit_receipt.components.GeneralTextField
+import com.cleverexpenses.receipts.feature_receipt.presentation.add_edit_receipt.components.GeneralReceiptInputsHolder
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,6 +31,8 @@ fun AddEditScreen(
     onBackPressed: () -> Unit
 ) {
     var paddingValues: PaddingValues
+
+
 
     Scaffold(
         topBar = {
@@ -69,30 +69,9 @@ fun AddEditScreen(
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            GeneralTextField(
-                modifier = Modifier,
-                value = viewModel.shopName.value.text,
-                onValueChange = { viewModel.onEvent(AddEditReceiptEvent.EnteredShopName(it)) },
-                placeholderText = viewModel.shopName.value.placeholder,
-                onFocusChanged = { viewModel.onEvent(AddEditReceiptEvent.ChangeShopNameFocus(it)) },
-                focusRequester = focusRequester
-            )
-            GeneralTextField(
-                modifier = Modifier,
-                value = viewModel.shopAddress.value.text,
-                onValueChange = { viewModel.onEvent(AddEditReceiptEvent.EnteredShopAddress(it)) },
-                placeholderText = viewModel.shopAddress.value.placeholder,
-                onFocusChanged = { viewModel.onEvent(AddEditReceiptEvent.ChangeShopAddressFocus(it)) },
-                focusRequester = focusRequester
-            )
-            GeneralTextField(
-                modifier = Modifier,
-                value = viewModel.sum.value.text,
-                onValueChange = { viewModel.onEvent(AddEditReceiptEvent.EnteredSum(it)) },
-                placeholderText = viewModel.sum.value.placeholder,
-                onFocusChanged = { viewModel.onEvent(AddEditReceiptEvent.ChangeSumFocus(it)) },
-                focusRequester = focusRequester
-            )
+            GeneralReceiptInputsHolder(focusRequester = focusRequester, viewModel = viewModel)
+
+
         }
     }
 }

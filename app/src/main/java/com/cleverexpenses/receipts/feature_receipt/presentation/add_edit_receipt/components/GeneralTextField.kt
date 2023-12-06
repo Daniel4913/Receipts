@@ -30,6 +30,7 @@ fun GeneralTextField(
     onFocusChanged: (FocusState) -> Unit,
     focusRequester: FocusRequester,
     keyboardType: KeyboardType = KeyboardType.Text,
+    trailingIcon: @Composable (() -> Unit)? = null
 ) {
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -40,14 +41,15 @@ fun GeneralTextField(
         placeholder = { Text(text = placeholderText) },
         modifier = modifier
             .focusRequester(focusRequester)
-            .onFocusChanged { onFocusChanged(it)
+            .onFocusChanged {
+                onFocusChanged(it)
             },
         colors = TextFieldDefaults.textFieldColors(
             containerColor = Color.Transparent,
             focusedIndicatorColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f),
-            disabledIndicatorColor = Color.Unspecified,
-            unfocusedIndicatorColor = MaterialTheme.colorScheme.onSurface,
-            disabledPlaceholderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+            disabledIndicatorColor = MaterialTheme.colorScheme.tertiary,
+            unfocusedIndicatorColor = Color.Transparent,
+            disabledPlaceholderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f)
         ),
         keyboardOptions = KeyboardOptions(
             keyboardType = keyboardType,
@@ -59,6 +61,7 @@ fun GeneralTextField(
             }
         ),
         maxLines = 1,
-        singleLine = true
+        singleLine = true,
+        trailingIcon = trailingIcon
     )
 }
