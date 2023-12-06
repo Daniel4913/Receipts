@@ -42,7 +42,7 @@ fun GeneralReceiptInputsHolder(
         verticalAlignment = Alignment.CenterVertically
     ) {
         GeneralTextField(
-            modifier = Modifier,
+            modifier = Modifier.weight(4f),
             value = viewModel.shopName.value.text,
             onValueChange = {
                 viewModel.onEvent(
@@ -67,7 +67,9 @@ fun GeneralReceiptInputsHolder(
                 .height(componentHeight),
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f)
         ) {}
-        IconButton(onClick = { /*TODO*/ }) {
+        IconButton(
+            modifier = Modifier.weight(1f),
+            onClick = { /*TODO*/ }) {
             Icon(
                 imageVector = Icons.Rounded.DateRange,
                 contentDescription = "Select Date icon"
@@ -85,7 +87,7 @@ fun GeneralReceiptInputsHolder(
         verticalAlignment = Alignment.CenterVertically
     ) {
         GeneralTextField(
-            modifier = Modifier,
+            modifier = Modifier.weight(4f),
             value = viewModel.shopAddress.value.text,
             onValueChange = {
                 viewModel.onEvent(
@@ -110,7 +112,9 @@ fun GeneralReceiptInputsHolder(
                 .height(componentHeight),
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f)
         ) {}
-        IconButton(onClick = { /*TODO*/ }) {
+        IconButton(
+            modifier = Modifier.weight(1f),
+            onClick = { /*TODO*/ }) {
             Icon(
                 painter = painterResource(id = R.drawable.round_credit_card_24),
                 contentDescription = "Select payment method icon"
@@ -125,7 +129,7 @@ fun GeneralReceiptInputsHolder(
         verticalAlignment = Alignment.CenterVertically
     ) {
         GeneralTextField(
-            modifier = Modifier,
+            modifier = Modifier.weight(4f),
             value = viewModel.sum.value.text,
             onValueChange = { viewModel.onEvent(AddEditReceiptEvent.EnteredSum(it)) },
             placeholderText = viewModel.sum.value.placeholder,
@@ -139,7 +143,9 @@ fun GeneralReceiptInputsHolder(
                 .height(componentHeight),
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f)
         ) {}
-        IconButton(onClick = { /*TODO*/ }) {
+        IconButton(
+            modifier = Modifier.weight(1f),
+            onClick = { /*TODO*/ }) {
             Icon(
                 painter = painterResource(id = R.drawable.round_currency_exchange_24),
                 contentDescription = "Currency icon"

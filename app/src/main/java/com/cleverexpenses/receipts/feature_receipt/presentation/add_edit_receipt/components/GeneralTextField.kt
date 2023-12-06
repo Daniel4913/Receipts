@@ -62,6 +62,7 @@ fun GeneralTextField(
         ),
         maxLines = 1,
         singleLine = true,
-        trailingIcon = trailingIcon
+        trailingIcon = trailingIcon,
+
     )
 }
