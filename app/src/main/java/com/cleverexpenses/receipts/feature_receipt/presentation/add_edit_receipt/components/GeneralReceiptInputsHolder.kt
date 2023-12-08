@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.DateRange
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -27,14 +28,57 @@ import androidx.compose.ui.unit.dp
 import com.cleverexpenses.receipts.R
 import com.cleverexpenses.receipts.feature_receipt.presentation.add_edit_receipt.AddEditReceiptEvent
 import com.cleverexpenses.receipts.feature_receipt.presentation.add_edit_receipt.AddEditViewModel
+import com.cleverexpenses.receipts.feature_receipt.presentation.add_edit_receipt.util.FromIconDropdownOption
+import com.maxkeppeker.sheets.core.models.base.rememberSheetState
+import com.maxkeppeler.sheets.calendar.CalendarDialog
+import com.maxkeppeler.sheets.calendar.models.CalendarConfig
+import com.maxkeppeler.sheets.calendar.models.CalendarSelection
+import com.maxkeppeler.sheets.clock.ClockDialog
+import com.maxkeppeler.sheets.clock.models.ClockConfig
+import com.maxkeppeler.sheets.clock.models.ClockSelection
+import java.time.LocalDate
+import java.time.LocalTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GeneralReceiptInputsHolder(
     focusRequester: FocusRequester,
-    viewModel: AddEditViewModel
+    viewModel: AddEditViewModel,
+    onDateTimeUpdated: (ZonedDateTime) -> Unit
 ) {
     val localDensity = LocalDensity.current
     var componentHeight by remember { mutableStateOf(0.dp) }
+
+    val dateDialog = rememberSheetState()
+    val timeDialog = rememberSheetState()
+    var currentDate by remember { mutableStateOf(LocalDate.now()) }
+    var currentTime by remember { mutableStateOf(LocalTime.now()) }
+
+
+    val currencyOptions = listOf(
+        FromIconDropdownOption(label = "Złoty", leadingIcon = { Text(text = "PLN") }),
+        FromIconDropdownOption(label = "Euro", leadingIcon = { Text(text = "EUR") }),
+    )
+
+    val paymentOptions = listOf(
+        FromIconDropdownOption(label = "Cash", leadingIcon = {
+            Icon(
+                painter = painterResource(id = R.drawable.round_attach_money_24),
+                contentDescription = "Cash payment method icon"
+            )
+        }
+        ),
+        FromIconDropdownOption(label = "Card", leadingIcon = {
+            Icon(
+                painter = painterResource(id = R.drawable.round_credit_card_24),
+                contentDescription = "Card payment method icon"
+            )
+        })
+    )
+
+
     Row(
         modifier = Modifier
             .fillMaxWidth(),
@@ -69,7 +113,9 @@ fun GeneralReceiptInputsHolder(
         ) {}
         IconButton(
             modifier = Modifier.weight(1f),
-            onClick = { /*TODO*/ }) {
+            onClick = {
+                dateDialog.show()
+            }) {
             Icon(
                 imageVector = Icons.Rounded.DateRange,
                 contentDescription = "Select Date icon"
@@ -112,14 +158,12 @@ fun GeneralReceiptInputsHolder(
                 .height(componentHeight),
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f)
         ) {}
-        IconButton(
+        FromIconDropdown(
             modifier = Modifier.weight(1f),
-            onClick = { /*TODO*/ }) {
-            Icon(
-                painter = painterResource(id = R.drawable.round_credit_card_24),
-                contentDescription = "Select payment method icon"
-            )
-        }
+            options = paymentOptions,
+            selectedOption = paymentOptions[0],
+            onOptionSelected = {},
+        )
 
     }
     Row(
@@ -135,7 +179,6 @@ fun GeneralReceiptInputsHolder(
             placeholderText = viewModel.sum.value.placeholder,
             onFocusChanged = { viewModel.onEvent(AddEditReceiptEvent.ChangeSumFocus(it)) },
             focusRequester = focusRequester,
-            trailingIcon = { Text(text = "PLN") }
         )
         Surface(
             modifier = Modifier
@@ -143,13 +186,33 @@ fun GeneralReceiptInputsHolder(
                 .height(componentHeight),
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f)
         ) {}
-        IconButton(
+        FromIconDropdown(
             modifier = Modifier.weight(1f),
-            onClick = { /*TODO*/ }) {
-            Icon(
-                painter = painterResource(id = R.drawable.round_currency_exchange_24),
-                contentDescription = "Currency icon"
-            )
-        }
+            options = currencyOptions,
+            selectedOption = currencyOptions[0],
+            onOptionSelected = {},
+        )
     }
+
+    CalendarDialog(state = dateDialog, selection = CalendarSelection.Date { localDate ->
+        currentDate = localDate
+        timeDialog.show()
+    }, config = CalendarConfig(monthSelection = true, yearSelection = true))
+
+    ClockDialog(
+        state = timeDialog,
+        selection = ClockSelection.HoursMinutes { hours, minutes ->
+            currentTime = LocalTime.of(hours, minutes)
+            onDateTimeUpdated(
+                ZonedDateTime.of(
+                    currentDate,
+                    currentTime,
+                    ZoneId.systemDefault()
+                )
+            )
+        },
+        config = ClockConfig(
+            is24HourFormat = true
+        )
+    )
 }

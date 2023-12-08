@@ -32,6 +32,8 @@ import com.cleverexpenses.receipts.R
 import com.cleverexpenses.receipts.feature_receipt.presentation.add_edit_receipt.components.GeneralReceiptInputsHolder
 import com.cleverexpenses.receipts.feature_receipt.presentation.add_edit_receipt.components.ImagePickerAndHolder
 import timber.log.Timber
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,6 +42,8 @@ fun AddEditScreen(
     onBackPressed: () -> Unit
 ) {
     var paddingValues: PaddingValues
+    var dateTime by remember { mutableStateOf(ZonedDateTime.now()) }
+    val dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM HH:mm")
 
     Scaffold(
         topBar = {
@@ -53,6 +57,7 @@ fun AddEditScreen(
                         )
                     }
                 },
+                actions = { Text(text = dateTime.format(dateTimeFormatter)) }
             )
         },
         floatingActionButton = {
@@ -95,7 +100,12 @@ fun AddEditScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             ImagePickerAndHolder(receiptUri = receiptUri, pickImageAndCrop = pickImageAndCrop)
-            GeneralReceiptInputsHolder(focusRequester = focusRequester, viewModel = viewModel)
+            GeneralReceiptInputsHolder(
+                focusRequester = focusRequester,
+                viewModel = viewModel,
+                onDateTimeUpdated = {
+                    dateTime = it
+                })
         }
     }
 }
