@@ -19,16 +19,16 @@ import com.cleverexpenses.receipts.feature_receipt.presentation.receipts_list.co
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ReceiptsScreen(
-    viewModel: ReceiptsViewModel
+    viewModel: ReceiptsViewModel,
+    navigateToAddReceipt: () -> Unit,
 ) {
     var paddingValues: PaddingValues
 
     val state = viewModel.receiptsListState
 
-
     Scaffold(
         floatingActionButton = {
-            FloatingActionButton(onClick = { /*TODO*/ }) {
+            FloatingActionButton(onClick = { navigateToAddReceipt() }) {
                 Icon(imageVector = Icons.Rounded.Add, contentDescription = "Add Receipt")
             }
         }

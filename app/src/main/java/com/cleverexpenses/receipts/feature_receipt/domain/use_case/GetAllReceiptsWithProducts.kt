@@ -1,7 +1,7 @@
 package com.cleverexpenses.receipts.feature_receipt.domain.use_case
 
-import com.cleverexpenses.receipts.feature_receipt.domain.model.ReceiptWithProducts
 import com.cleverexpenses.receipts.feature_receipt.data.repository.ReceiptRepository
+import com.cleverexpenses.receipts.feature_receipt.domain.model.ReceiptWithProducts
 import kotlinx.coroutines.flow.Flow
 
 class GetAllReceiptsWithProducts(

@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cleverexpenses.receipts.feature_receipt.domain.use_case.ReceiptUseCases
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 
 class ReceiptsViewModel(

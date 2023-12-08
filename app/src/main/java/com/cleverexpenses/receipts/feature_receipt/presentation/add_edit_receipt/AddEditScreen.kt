@@ -39,7 +39,8 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun AddEditScreen(
     viewModel: AddEditViewModel,
-    onBackPressed: () -> Unit
+    onBackPressed: () -> Unit,
+    onSaveClicked: () -> Unit
 ) {
     var paddingValues: PaddingValues
     var dateTime by remember { mutableStateOf(ZonedDateTime.now()) }
@@ -57,11 +58,13 @@ fun AddEditScreen(
                         )
                     }
                 },
-                actions = { Text(text = dateTime.format(dateTimeFormatter)) }
+                actions = {
+                    Text(text = dateTime.format(dateTimeFormatter))
+                }
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { /*TODO*/ }) {
+            FloatingActionButton(onClick = { onSaveClicked() }) {
                 Icon(
                     painter = painterResource(id = R.drawable.round_save_24),
                     contentDescription = "Save Receipt",
@@ -72,8 +75,6 @@ fun AddEditScreen(
     ) { paddingVal ->
         paddingValues = paddingVal
         val focusRequester = FocusRequester()
-
-        // Pick and crop image
         var receiptUri by remember { mutableStateOf<Uri?>(null) }
 
         val pickImageAndCrop = rememberLauncherForActivityResult(
@@ -89,7 +90,6 @@ fun AddEditScreen(
                 Timber.d("fun cropImage", "$exception")
             }
         }
-        //
 
         Column(
             modifier = Modifier
