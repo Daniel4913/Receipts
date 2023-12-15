@@ -5,9 +5,13 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class Receipt(
-    @PrimaryKey val receiptId: Int,
+    @PrimaryKey val receiptId: Int? = null,
     val shopName: String,
-    val date: String,
+    val shopAddress: String,
+    val receiptDate: Long,
+    val createDate: Long,
     val sum: Int,
     val paymentMethod: String,
+    val currency: String,
+    val receiptPhotoUri: String? = null
 )

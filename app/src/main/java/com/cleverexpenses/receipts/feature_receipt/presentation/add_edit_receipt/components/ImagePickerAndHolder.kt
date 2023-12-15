@@ -1,7 +1,9 @@
 package com.cleverexpenses.receipts.feature_receipt.presentation.add_edit_receipt.components
 
+import android.content.Context
 import android.graphics.Color
 import android.net.Uri
+import android.os.Environment
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,17 +20,27 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.canhub.cropper.CropImageContractOptions
 import com.canhub.cropper.CropImageOptions
 import com.canhub.cropper.CropImageView
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @Composable
 fun ImagePickerAndHolder(
     receiptUri: Uri? = null,
-    pickImageAndCrop: ManagedActivityResultLauncher<CropImageContractOptions, CropImageView.CropResult>
+    pickImageAndCrop: ManagedActivityResultLauncher<CropImageContractOptions, CropImageView.CropResult>,
+    fileToSave: (File) -> Unit
 ) {
+
+    val context = LocalContext.current
+
 
     Surface(
         modifier = Modifier
@@ -56,6 +68,8 @@ fun ImagePickerAndHolder(
                         contentDescription = "Receipt async image from uri",
                         model = receiptUri,
                     )
+                    val photoFile = createImageFile(context = context)
+                    fileToSave(photoFile)
                 }
             }
             IconButton(
@@ -85,3 +99,17 @@ fun ImagePickerAndHolder(
         }
     }
 }
+
+@Throws(IOException::class)
+fun createImageFile(context: Context): File {
+    val timeStamp: String =
+        SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+    val storageDir: File? = context.filesDir
+    return File.createTempFile(
+        "JPEG_${timeStamp}_",
+        ".jpg",
+        storageDir
+    )
+}
+
+

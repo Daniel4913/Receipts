@@ -25,8 +25,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cleverexpenses.receipts.feature_receipt.domain.model.ReceiptWithProducts
+import com.cleverexpenses.receipts.feature_receipt.presentation.util.ZonedDateTimeConverter
 import com.cleverexpenses.receipts.feature_receipt.presentation.util.getPaymentMethod
-
+import java.time.format.DateTimeFormatter
 
 
 @Composable
@@ -34,6 +35,7 @@ fun ReceiptItem(
     receipt: ReceiptWithProducts,
     modifier: Modifier = Modifier
 ) {
+    val dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM HH:mm")
     Column(
         modifier = modifier
     ) {
@@ -43,7 +45,8 @@ fun ReceiptItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = receipt.general.date,
+                text = ZonedDateTimeConverter().toZonedDateTime(receipt.general.receiptDate)
+                    .format(dateTimeFormatter),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )

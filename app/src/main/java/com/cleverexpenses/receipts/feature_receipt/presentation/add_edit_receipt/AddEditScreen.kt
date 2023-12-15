@@ -1,6 +1,7 @@
 package com.cleverexpenses.receipts.feature_receipt.presentation.add_edit_receipt
 
 import android.net.Uri
+import android.os.Environment
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -32,8 +33,13 @@ import com.cleverexpenses.receipts.R
 import com.cleverexpenses.receipts.feature_receipt.presentation.add_edit_receipt.components.GeneralReceiptInputsHolder
 import com.cleverexpenses.receipts.feature_receipt.presentation.add_edit_receipt.components.ImagePickerAndHolder
 import timber.log.Timber
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import java.util.Date
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,7 +49,7 @@ fun AddEditScreen(
     onSaveClicked: () -> Unit
 ) {
     var paddingValues: PaddingValues
-    var dateTime by remember { mutableStateOf(ZonedDateTime.now()) }
+    var dateTime by remember { mutableStateOf(viewModel.receiptDate.value.receiptDateTime) }
     val dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM HH:mm")
 
     Scaffold(
@@ -99,11 +105,17 @@ fun AddEditScreen(
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            ImagePickerAndHolder(receiptUri = receiptUri, pickImageAndCrop = pickImageAndCrop)
+            ImagePickerAndHolder(
+                receiptUri = receiptUri,
+                pickImageAndCrop = pickImageAndCrop,
+                fileToSave = {
+                    viewModel.onEvent(AddEditReceiptEvent.SaveReceiptImage(it))
+                })
             GeneralReceiptInputsHolder(
                 focusRequester = focusRequester,
                 viewModel = viewModel,
                 onDateTimeUpdated = {
+                    viewModel.onEvent(AddEditReceiptEvent.ChangeReceiptDateTime(it))
                     dateTime = it
                 })
         }

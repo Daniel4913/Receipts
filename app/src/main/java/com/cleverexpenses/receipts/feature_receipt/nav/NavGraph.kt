@@ -7,6 +7,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.cleverexpenses.receipts.feature_receipt.presentation.add_edit_receipt.AddEditReceiptEvent
 import com.cleverexpenses.receipts.feature_receipt.presentation.add_edit_receipt.AddEditScreen
 import com.cleverexpenses.receipts.feature_receipt.presentation.add_edit_receipt.AddEditViewModel
 import com.cleverexpenses.receipts.feature_receipt.presentation.receipts_list.ReceiptsScreen
@@ -33,8 +34,8 @@ fun SetupNavGraph(
             navigateBack = {
                 navController.popBackStack()
             },
-            onSaveClicked = {
-//                navController.popBackStack()
+            onSuccessfulSave = {
+                navController.popBackStack()
             }
         )
     }
@@ -52,7 +53,7 @@ fun NavGraphBuilder.receiptsRoute(
 
 fun NavGraphBuilder.addReceiptRoute(
     navigateBack: () -> Unit,
-    onSaveClicked: () -> Unit
+    onSuccessfulSave: () -> Unit
 ) {
     composable(route = Screen.AddEditScreen.route + "?receiptId={receiptId}",
         arguments = listOf(
@@ -66,7 +67,9 @@ fun NavGraphBuilder.addReceiptRoute(
         AddEditScreen(
             viewModel = viewModel,
             onBackPressed = { navigateBack() },
-            onSaveClicked = { onSaveClicked() }
+            onSaveClicked = { viewModel.onEvent(AddEditReceiptEvent.SaveReceipt)
+            onSuccessfulSave()
+            }
         )
     }
 }
