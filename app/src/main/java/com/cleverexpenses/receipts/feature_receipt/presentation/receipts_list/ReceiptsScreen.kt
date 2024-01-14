@@ -21,6 +21,7 @@ import com.cleverexpenses.receipts.feature_receipt.presentation.receipts_list.co
 fun ReceiptsScreen(
     viewModel: ReceiptsViewModel,
     navigateToAddReceipt: () -> Unit,
+    onReceiptClicked: (Int) -> Unit,
 ) {
     var paddingValues: PaddingValues
 
@@ -42,7 +43,8 @@ fun ReceiptsScreen(
                     receipt = receipt,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp)
+                        .padding(16.dp),
+                    onClick = onReceiptClicked
                 )
             }
         }

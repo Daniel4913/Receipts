@@ -14,6 +14,7 @@ import com.cleverexpenses.receipts.feature_receipt.domain.use_case.GetAllReceipt
 import com.cleverexpenses.receipts.feature_receipt.domain.use_case.GetReceiptWithProducts
 import com.cleverexpenses.receipts.feature_receipt.domain.use_case.ReceiptUseCases
 import com.cleverexpenses.receipts.feature_receipt.presentation.add_edit_receipt.AddEditViewModel
+import com.cleverexpenses.receipts.feature_receipt.presentation.receipt_details.ReceiptDetailsViewModel
 import com.cleverexpenses.receipts.feature_receipt.presentation.receipts_list.ReceiptsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -94,6 +95,13 @@ val appModule = module {
     viewModel {
         ReceiptsViewModel(
             receiptUseCases = get()
+        )
+    }
+
+    viewModel {
+        ReceiptDetailsViewModel(
+            useCases = get(),
+            savedStateHandle = get()
         )
     }
 }

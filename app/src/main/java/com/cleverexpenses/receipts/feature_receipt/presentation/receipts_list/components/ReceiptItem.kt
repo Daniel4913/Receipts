@@ -1,6 +1,8 @@
 package com.cleverexpenses.receipts.feature_receipt.presentation.receipts_list.components
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,6 +19,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -33,14 +36,25 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun ReceiptItem(
     receipt: ReceiptWithProducts,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: (Int) -> Unit
 ) {
     val dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM HH:mm")
+
     Column(
-        modifier = modifier
+        modifier = modifier.clickable(
+            indication = null,
+            interactionSource = remember {
+                MutableInteractionSource()
+            }
+        ) {
+            if (receipt.general.receiptId != null)
+                onClick(receipt.general.receiptId)
+        }
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically
         ) {
