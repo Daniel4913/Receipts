@@ -29,7 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cleverexpenses.receipts.feature_receipt.domain.model.ReceiptWithProducts
 import com.cleverexpenses.receipts.feature_receipt.presentation.util.ZonedDateTimeConverter
-import com.cleverexpenses.receipts.feature_receipt.presentation.util.getPaymentMethod
+import com.cleverexpenses.receipts.feature_receipt.presentation.util.getPaymentMethodIcon
 import java.time.format.DateTimeFormatter
 
 
@@ -76,7 +76,7 @@ fun ReceiptItem(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    painter = painterResource(id = getPaymentMethod(receipt.general.paymentMethod)),
+                    painter = painterResource(id = getPaymentMethodIcon(receipt.general.paymentMethod)),
                     contentDescription = "payment method",
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )

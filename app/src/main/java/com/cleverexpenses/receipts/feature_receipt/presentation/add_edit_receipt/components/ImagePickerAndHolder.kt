@@ -36,11 +36,7 @@ import java.util.Locale
 fun ImagePickerAndHolder(
     receiptUri: Uri? = null,
     pickImageAndCrop: ManagedActivityResultLauncher<CropImageContractOptions, CropImageView.CropResult>,
-    fileToSave: (File) -> Unit
 ) {
-
-    val context = LocalContext.current
-
 
     Surface(
         modifier = Modifier
@@ -68,8 +64,6 @@ fun ImagePickerAndHolder(
                         contentDescription = "Receipt async image from uri",
                         model = receiptUri,
                     )
-                    val photoFile = createImageFile(context = context)
-                    fileToSave(photoFile)
                 }
             }
             IconButton(
@@ -80,7 +74,7 @@ fun ImagePickerAndHolder(
                         borderCornerColor = Color.RED,
                     )
                     val contractOptions =
-                        CropImageContractOptions(uri = null, cropImageOptions = cropOptions)
+                        CropImageContractOptions(uri = receiptUri, cropImageOptions = cropOptions)
                     pickImageAndCrop.launch(contractOptions)
                 },
                 modifier = Modifier
@@ -99,17 +93,3 @@ fun ImagePickerAndHolder(
         }
     }
 }
-
-@Throws(IOException::class)
-fun createImageFile(context: Context): File {
-    val timeStamp: String =
-        SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-    val storageDir: File? = context.filesDir
-    return File.createTempFile(
-        "JPEG_${timeStamp}_",
-        ".jpg",
-        storageDir
-    )
-}
-
-

@@ -2,7 +2,6 @@ package com.cleverexpenses.receipts.feature_receipt.presentation.add_edit_receip
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cleverexpenses.receipts.feature_receipt.domain.model.Receipt
@@ -83,7 +82,7 @@ class AddEditViewModel(
 
             is AddEditReceiptEvent.SaveReceiptImage -> {
                 _receiptPhoto.value = _receiptPhoto.value.copy(
-                    receiptImageUri = event.file.toUri()
+                    receiptImageUri = event.uri
                 )
             }
 

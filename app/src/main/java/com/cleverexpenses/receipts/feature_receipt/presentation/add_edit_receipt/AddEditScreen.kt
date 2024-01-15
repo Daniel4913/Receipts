@@ -90,6 +90,7 @@ fun AddEditScreen(
                 val uriContent = result.uriContent
                 if (uriContent != null) {
                     receiptUri = uriContent
+                    viewModel.onEvent(AddEditReceiptEvent.SaveReceiptImage(uriContent))
                 }
             } else {
                 val exception = result.error
@@ -108,9 +109,7 @@ fun AddEditScreen(
             ImagePickerAndHolder(
                 receiptUri = receiptUri,
                 pickImageAndCrop = pickImageAndCrop,
-                fileToSave = {
-                    viewModel.onEvent(AddEditReceiptEvent.SaveReceiptImage(it))
-                })
+            )
             GeneralReceiptInputsHolder(
                 focusRequester = focusRequester,
                 viewModel = viewModel,

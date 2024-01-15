@@ -10,8 +10,8 @@ import androidx.navigation.navArgument
 import com.cleverexpenses.receipts.feature_receipt.presentation.add_edit_receipt.AddEditReceiptEvent
 import com.cleverexpenses.receipts.feature_receipt.presentation.add_edit_receipt.AddEditScreen
 import com.cleverexpenses.receipts.feature_receipt.presentation.add_edit_receipt.AddEditViewModel
-import com.cleverexpenses.receipts.feature_receipt.presentation.receipt_details.ReceiptDetailsScreen
-import com.cleverexpenses.receipts.feature_receipt.presentation.receipt_details.ReceiptDetailsViewModel
+import com.cleverexpenses.receipts.feature_receipt.presentation.receipt_details.DetailsScreen
+import com.cleverexpenses.receipts.feature_receipt.presentation.receipt_details.DetailsViewModel
 import com.cleverexpenses.receipts.feature_receipt.presentation.receipts_list.ReceiptsScreen
 import com.cleverexpenses.receipts.feature_receipt.presentation.receipts_list.ReceiptsViewModel
 import com.cleverexpenses.receipts.feature_receipt.presentation.util.Constants.RECEIPT_DETAILS_SCREEN_ARGUMENT_KEY
@@ -49,7 +49,7 @@ fun SetupNavGraph(
             navigateBack = {
                 navController.popBackStack()
             },
-            navigateToAddEditReceiptWithArgs = { receiptId ->
+            navigateToEditReceipt = { receiptId ->
                 navController.navigate(Screen.AddEditScreen.passReceiptId(receiptId))
             }
         )
@@ -99,7 +99,7 @@ fun NavGraphBuilder.addReceiptRoute(
 
 fun NavGraphBuilder.receiptDetailsRoute(
     navigateBack: () -> Unit,
-    navigateToAddEditReceiptWithArgs: (Int) -> Unit
+    navigateToEditReceipt: (Int) -> Unit
 ) {
     composable(
         route = Screen.ReceiptDetailsScreen.route,
@@ -111,12 +111,12 @@ fun NavGraphBuilder.receiptDetailsRoute(
             }
         )
     ) {
-        val viewModel: ReceiptDetailsViewModel = koinViewModel()
-        ReceiptDetailsScreen(
-            viewModel = viewModel,
-            navigateBack = navigateBack,
+        val viewModel: DetailsViewModel = koinViewModel()
+        DetailsScreen(
+            state = viewModel.state,
+            onBackPressed = navigateBack,
             navigateToAddEditReceiptWithArgs = { receiptId ->
-                navigateToAddEditReceiptWithArgs(receiptId)
+                navigateToEditReceipt(receiptId)
             },
         )
     }
