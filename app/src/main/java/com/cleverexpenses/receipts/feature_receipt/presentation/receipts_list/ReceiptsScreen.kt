@@ -25,7 +25,7 @@ fun ReceiptsScreen(
 ) {
     var paddingValues: PaddingValues
 
-    val state = viewModel.receiptsListState
+    val state = viewModel.listState
 
     Scaffold(
         floatingActionButton = {

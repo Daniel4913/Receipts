@@ -14,6 +14,10 @@ import java.time.ZonedDateTime
 class AddEditViewModel(
     private val useCases: ReceiptUseCases
 ) : ViewModel() {
+
+    private val _state = mutableStateOf(AddEditScreenState())
+    val state: State<AddEditScreenState> = _state
+
     private val _shopName = mutableStateOf(
         AddEditScreenState(placeholder = "Shop name")
     )
@@ -31,7 +35,7 @@ class AddEditViewModel(
     val receiptDate: State<AddEditScreenState> = _receiptDate
 
     private val _sum = mutableStateOf(
-        AddEditScreenState(placeholder = "Sum", isInteger = true)
+        AddEditScreenState(placeholder = "Sum")
     )
     val sum: State<AddEditScreenState> = _sum
 
@@ -93,25 +97,68 @@ class AddEditViewModel(
             }
 
             is AddEditReceiptEvent.SaveReceipt -> {
-                viewModelScope.launch {
-                    try {
-                        useCases.addReceipt(
-                            Receipt(
-                                shopName = _shopName.value.text,
-                                shopAddress = _shopAddress.value.text,
-                                receiptDate = ZonedDateTimeConverter().toTimestamp(_receiptDate.value.receiptDateTime),
-                                createDate = System.currentTimeMillis(),
-                                sum = _sum.value.text.toInt(),
-                                paymentMethod = "",
-                                currency = "",
-                                receiptPhotoUri = _receiptPhoto.value.receiptImageUri.toString()
+                if (allInputsValid()) {
+                    upsertReceipt(
+                        onSuccess = { status ->
+                            _state.value = _state.value.copy(
+                                receiptSaved = status
                             )
-                        )
-                        Timber.d("Receipt saved: ${_shopName.value.text} \n${_shopAddress.value.text} \n${_sum.value.text} \n${_receiptDate.value.receiptDateTime}")
-                    } catch (e: Exception) {
-                        Timber.e("Receipt not saved: $e")
-                    }
+                        },
+                        onError = { message ->
+                            _state.value = _state.value.copy(
+                                error = Throwable(message)
+                            )
+                        }
+                    )
                 }
+            }
+        }
+    }
+
+    private fun setErrorAndReturnFalse(message: String): Boolean {
+        _state.value = _state.value.copy(
+            error = Throwable(message)
+        )
+        return false
+    }
+
+    private fun allInputsValid(): Boolean {
+        if (_shopName.value.text.isBlank()) {
+            return setErrorAndReturnFalse("Shop name cannot be empty")
+        }
+        if (_sum.value.text.isBlank()) {
+            return setErrorAndReturnFalse("Sum cannot be empty")
+        } else {
+            _sum.value.text.toDoubleOrNull()
+                ?: return setErrorAndReturnFalse("Sum is not a number")
+        }
+        return true
+    }
+
+    private fun upsertReceipt(onSuccess: (Boolean) -> Unit, onError: (String) -> Unit) {
+        viewModelScope.launch {
+            try {
+                useCases.addReceipt(
+                    Receipt(
+                        shopName = _shopName.value.text,
+                        shopAddress = _shopAddress.value.text,
+                        receiptDate = ZonedDateTimeConverter().toTimestamp(_receiptDate.value.receiptDateTime),
+                        createDate = System.currentTimeMillis(),
+                        sum = _sum.value.text.toDouble(),
+                        paymentMethod = "",
+                        currency = "",
+                        receiptPhotoUri = _receiptPhoto.value.receiptImageUri.toString()
+                    )
+                )
+                onSuccess(true)
+                Timber.d("Receipt saved: ${_shopName.value.text} \n${_shopAddress.value.text} \n${_sum.value.text} \n${_receiptDate.value.receiptDateTime}")
+
+            } catch (e: Exception) {
+                _state.value = _state.value.copy(
+                    error = e
+                )
+                onError(e.message ?: "Unknown error")
+                Timber.e("Receipt not saved: $e")
             }
         }
     }

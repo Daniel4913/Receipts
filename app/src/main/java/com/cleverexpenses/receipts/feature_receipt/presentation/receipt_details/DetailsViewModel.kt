@@ -88,7 +88,7 @@ data class ReceiptDisplayable(
     val shopName: String = "",
     val shopAddress: String = "",
     val receiptDate: String = "",
-    val sum: Int = 0,
+    val sum: Double = 0.0,
     val paymentMethod: Payment = Payment.Cash,
     val currency: String = "",
     val receiptPhotoUri: Uri? = null,

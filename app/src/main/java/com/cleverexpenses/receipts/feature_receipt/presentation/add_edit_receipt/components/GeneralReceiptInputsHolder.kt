@@ -24,6 +24,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.cleverexpenses.receipts.R
 import com.cleverexpenses.receipts.feature_receipt.presentation.add_edit_receipt.AddEditReceiptEvent
@@ -174,11 +175,12 @@ fun GeneralReceiptInputsHolder(
     ) {
         GeneralTextField(
             modifier = Modifier.weight(4f),
-            value = viewModel.sum.value.text,
+            value = getValidatedDecimal(viewModel.sum.value.text),
             onValueChange = { viewModel.onEvent(AddEditReceiptEvent.EnteredSum(it)) },
             placeholderText = viewModel.sum.value.placeholder,
             onFocusChanged = { viewModel.onEvent(AddEditReceiptEvent.ChangeSumFocus(it)) },
             focusRequester = focusRequester,
+            keyboardType = KeyboardType.Number
         )
         Surface(
             modifier = Modifier
@@ -215,4 +217,26 @@ fun GeneralReceiptInputsHolder(
             is24HourFormat = true
         )
     )
+}
+
+fun getValidatedDecimal(text: String): String {
+    if (text.isEmpty()) return text
+
+    val normalizedText = text.replace(',', '.')
+    val filteredChars = normalizedText.filterIndexed { index, c ->
+        c.isDigit()
+                || (c == '.' && index != 0 && normalizedText.indexOf('.') == index)
+                || (c == '.' && index != 0 && normalizedText.count { it == '.' } <= 1)
+    }
+
+    // If dot is present, take digits before decimal and first 2 digits after decimal
+    return if (filteredChars.count { it == '.' } == 1) {
+        val beforeDecimal = filteredChars.substringBefore('.')
+        val afterDecimal = filteredChars.substringAfter('.')
+        beforeDecimal + "." + afterDecimal.take(2)
+    }
+    // If there is no dot, return the digits
+    else {
+        filteredChars
+    }
 }

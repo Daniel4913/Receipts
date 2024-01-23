@@ -7,9 +7,9 @@ data class AddEditScreenState(
     val text: String = "",
     val placeholder: String = "",
     val isPlaceholderVisible: Boolean = true,
-    val error: String = "",
+    val error: Throwable? = null,
     val isInteger: Boolean = false,
     val receiptDateTime: ZonedDateTime = ZonedDateTime.now(),
-    val isSaveEnabled: Boolean = true,
+    val receiptSaved: Boolean = false,
     val receiptImageUri: Uri? = null
 )

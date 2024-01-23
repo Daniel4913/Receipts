@@ -14,8 +14,8 @@ import androidx.room.PrimaryKey
 data class Product(
     @PrimaryKey val productId: Int,
     val name: String,
-    val quantity: Int,
-    val unitPrice: Int,
-    val totalPrice: Int,
+    val quantity: Double,
+    val unitPrice: Double,
+    val totalPrice: Double,
     val receiptOwnerId: Int
 )

@@ -2,6 +2,7 @@ package com.cleverexpenses.receipts.feature_receipt.presentation.add_edit_receip
 
 import android.net.Uri
 import android.os.Environment
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,6 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import com.canhub.cropper.CropImageContract
 import com.cleverexpenses.receipts.R
@@ -51,7 +54,7 @@ fun AddEditScreen(
     var paddingValues: PaddingValues
     var dateTime by remember { mutableStateOf(viewModel.receiptDate.value.receiptDateTime) }
     val dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM HH:mm")
-
+    val context = LocalContext.current
     Scaffold(
         topBar = {
             TopAppBar(
@@ -82,6 +85,16 @@ fun AddEditScreen(
         paddingValues = paddingVal
         val focusRequester = FocusRequester()
         var receiptUri by remember { mutableStateOf<Uri?>(null) }
+
+        LaunchedEffect(key1 = viewModel.state.value.error) {
+            if (viewModel.state.value.error != null)
+                Toast.makeText(
+                    context,
+                    viewModel.state.value.error?.message ?: "Unknown error",
+                    Toast.LENGTH_SHORT
+                ).show(
+                )
+        }
 
         val pickImageAndCrop = rememberLauncherForActivityResult(
             CropImageContract()

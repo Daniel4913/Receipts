@@ -10,7 +10,7 @@ data class Receipt(
     val shopAddress: String,
     val receiptDate: Long,
     val createDate: Long,
-    val sum: Int,
+    val sum: Double,
     val paymentMethod: String,
     val currency: String,
     val receiptPhotoUri: String? = null

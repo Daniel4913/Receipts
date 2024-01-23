@@ -11,16 +11,16 @@ class ReceiptsViewModel(
     private val receiptUseCases: ReceiptUseCases
 ) : ViewModel() {
 
-    private val _receiptsListState = mutableStateOf(
-        ReceiptsListState(
+    private val _ListState = mutableStateOf(
+        ListState(
             receipts = emptyList(),
             isLoading = false,
             error = ""
         )
     )
 
-    val receiptsListState: ReceiptsListState
-        get() = _receiptsListState.value
+    val listState: ListState
+        get() = _ListState.value
 
     init {
         getReceipts()
@@ -29,7 +29,7 @@ class ReceiptsViewModel(
     private fun getReceipts() {
         viewModelScope.launch {
             receiptUseCases.getAllReceiptsWithProducts.invoke().collect { receipts ->
-                _receiptsListState.value = receiptsListState.copy(
+                _ListState.value = listState.copy(
                     receipts = receipts,
                     isLoading = false
                 )
