@@ -12,6 +12,8 @@ sealed class AddEditReceiptEvent {
     data class EnteredSum(val value: String) : AddEditReceiptEvent()
     data class ChangeSumFocus(val focusState: FocusState) : AddEditReceiptEvent()
     data class ChangeReceiptDateTime(val receiptDateTime: ZonedDateTime) : AddEditReceiptEvent()
+    data class SelectedPaymentMethod(val value: String) : AddEditReceiptEvent()
+    data class SelectedCurrency(val value: String) : AddEditReceiptEvent()
     data class SaveReceiptImage(val uri: Uri) : AddEditReceiptEvent()
     object SaveReceipt : AddEditReceiptEvent()
 

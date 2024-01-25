@@ -8,7 +8,8 @@ data class AddEditScreenState(
     val placeholder: String = "",
     val isPlaceholderVisible: Boolean = true,
     val error: Throwable? = null,
-    val isInteger: Boolean = false,
+    val currency: String = "",
+    val paymentMethod: String = "",
     val receiptDateTime: ZonedDateTime = ZonedDateTime.now(),
     val receiptSaved: Boolean = false,
     val receiptImageUri: Uri? = null

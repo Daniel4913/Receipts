@@ -34,6 +34,22 @@ class AddEditViewModel(
 
     val receiptDate: State<AddEditScreenState> = _receiptDate
 
+    private val _paymentMethod = mutableStateOf(
+        AddEditScreenState(
+            paymentMethod = "Cash"
+        )
+    )
+
+    val paymentMethod: State<AddEditScreenState> = _paymentMethod
+
+    private val _currency = mutableStateOf(
+        AddEditScreenState(
+            currency = "EUR"
+        )
+    )
+
+    val currency: State<AddEditScreenState> = _currency
+
     private val _sum = mutableStateOf(
         AddEditScreenState(placeholder = "Sum")
     )
@@ -112,6 +128,19 @@ class AddEditViewModel(
                     )
                 }
             }
+
+            is AddEditReceiptEvent.SelectedCurrency -> {
+                _currency.value = _currency.value.copy(
+                    currency = event.value
+                )
+            }
+
+            is AddEditReceiptEvent.SelectedPaymentMethod -> {
+                _paymentMethod.value = _paymentMethod.value.copy(
+                    paymentMethod = event.value
+                )
+
+            }
         }
     }
 
@@ -145,8 +174,8 @@ class AddEditViewModel(
                         receiptDate = ZonedDateTimeConverter().toTimestamp(_receiptDate.value.receiptDateTime),
                         createDate = System.currentTimeMillis(),
                         sum = _sum.value.text.toDouble(),
-                        paymentMethod = "",
-                        currency = "",
+                        paymentMethod = _paymentMethod.value.paymentMethod,
+                        currency = _currency.value.currency,
                         receiptPhotoUri = _receiptPhoto.value.receiptImageUri.toString()
                     )
                 )

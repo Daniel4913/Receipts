@@ -163,7 +163,9 @@ fun GeneralReceiptInputsHolder(
             modifier = Modifier.weight(1f),
             options = paymentOptions,
             selectedOption = paymentOptions[0],
-            onOptionSelected = {},
+            onOptionSelected = {
+                viewModel.onEvent(AddEditReceiptEvent.SelectedPaymentMethod(it.label))
+            },
         )
 
     }
@@ -192,7 +194,9 @@ fun GeneralReceiptInputsHolder(
             modifier = Modifier.weight(1f),
             options = currencyOptions,
             selectedOption = currencyOptions[0],
-            onOptionSelected = {},
+            onOptionSelected = {
+                viewModel.onEvent(AddEditReceiptEvent.SelectedCurrency(it.label))
+            },
         )
     }
 
